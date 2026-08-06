@@ -1,0 +1,55 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: postgres_db
+    restart: always
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: adminpassword
+      POSTGRES_DB: meubanco
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  backend:
+    build:
+      context: ./backend
+    container_name: node_backend
+    ports:
+      - "3333:3333"
+    environment:
+      # A URL de conexão aponta para o nome do serviço do banco ("db")
+      - DATABASE_URL=postgresql://admin:adminpassword@db:5432/meubanco
+    volumes:
+      - ./backend:/usr/src/app
+      # Protege os node_modules do container contra sobrescritas do host
+      - /usr/src/app/node_modules 
+    depends_on:
+      - db
+    # Mantém o container vivo caso o node falhe durante o dev
+    command: npm run dev
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: next_frontend
+    ports:
+      - "3000:3000"
+    environment:
+      # O Next.js vai acessar o backend através do localhost na máquina hospedeira
+      - NEXT_PUBLIC_API_URL=http://localhost:3333
+      - WATCHPACK_POLLING=true
+      - CHOKIDAR_USEPOLLING=true
+    volumes:
+      - ./frontend:/usr/src/app
+      - /usr/src/app/node_modules
+      - /usr/src/app/.next
+    depends_on:
+      - backend
+    command: npm run dev
+
+volumes:
+  pgdata:
