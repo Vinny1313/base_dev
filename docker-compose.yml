@@ -30,7 +30,7 @@ services:
     depends_on:
       - db
     # Mantém o container vivo caso o node falhe durante o dev
-    command: npm run dev
+    command: npm run start:dev
 
   frontend:
     build:
