@@ -1,63 +1,42 @@
-# 🚀 Base Full-Stack Dockerizada
+# 🚀 Catálogo de Starter Kits
 
-Este repositório contém a infraestrutura base e o ambiente de desenvolvimento inicial para o **Sistema Residuum**. A arquitetura foi desenhada para ser moderna, escalável e 100% conteinerizada, eliminando o problema de "na minha máquina funciona" e acelerando o fluxo de trabalho.
+## 💡 Sobre este repositório
 
----
+Este repositório é um verdadeiro "berço" de boilerplates e ambientes de desenvolvimento pré-configurados. O objetivo central é acelerar o setup inicial de novos projetos, eliminando as horas gastas configurando infraestrutura, integrando bancos de dados e ajustando ferramentas. 
 
-## 🛠️ Tecnologias Utilizadas
-
-A stack foi escolhida para garantir alta performance e produtividade durante o desenvolvimento do MVP:
-
-* **Frontend:** Next.js (React) 
-* **Backend:** Node.js com Express
-* **Banco de Dados:** PostgreSQL (Relacional)
-* **Infraestrutura:** Docker e Docker Compose
+Aqui, você encontra bases sólidas e arquiteturas padronizadas. É só clonar o kit que melhor atende à sua necessidade e começar imediatamente a focar no que realmente importa: escrever as regras de negócio e desenvolver o seu produto.
 
 ---
 
-## ⚙️ Pré-requisitos
+## 🛠️ Como usar (Clonando um Kit)
 
-Para rodar este projeto localmente, você não precisa instalar o Node.js ou o PostgreSQL nativamente. É necessário ter apenas as seguintes ferramentas instaladas:
+Como este repositório hospeda **vários** kits diferentes em subpastas, não recomendamos o uso do `git clone` tradicional (pois ele baixaria todos os kits de uma vez com todo o histórico de commits).
 
-* [Git](https://git-scm.com/)
-* [Docker Desktop](https://www.docker.com/products/docker-desktop/) (com WSL2 ativado, caso esteja no Windows)
+A abordagem ideal é utilizar o **degit**. Essa ferramenta do ecossistema Node baixa **apenas a pasta específica** do template que você quer utilizar, entregando um ambiente totalmente limpo para você iniciar o seu versionamento do zero.
+
+Para iniciar um projeto novo baseado em um dos nossos kits, execute o comando abaixo no seu terminal:
+
+```bash
+npx degit Vinny1313/starter-kit/NOME_DA_PASTA nome-do-seu-novo-projeto
+
+> **💡 Dica:** Este projeto também está configurado como um **Template Repository**. Se preferir, você pode clicar no botão verde **"Use this template"** no topo da página do GitHub para gerar uma cópia completa dessa estrutura diretamente na sua conta.
 
 ---
 
-## 🚀 Como executar o projeto
+## 📦 Kits Disponíveis & Release Notes
 
-Com o Docker rodando na sua máquina, abra o seu terminal e siga os passos abaixo:
+### 🟢 v1.0.0 | Kit: `fullstack-next-nest-postgres`
 
-**1. Clone este repositório**
-bash
-git clone [https://github.com/Vinny1313/base_dev.git](https://github.com/Vinny1313/base_dev.git)
+**Status:** Lançado e Estável
 
-2. Acesse a pasta do projeto
+O primeiro boilerplate do catálogo traz um ambiente de desenvolvimento de nível empresarial, altamente escalável e focado em produtividade. Todo o ecossistema é conteinerizado, garantindo que o famoso problema de *"na minha máquina funciona"* deixe de existir.
 
-cd base_dev
+**✨ O que vem configurado neste pacote:**
 
-3. Inicie os contêineres em segundo plano
-docker compose up -d --build
-
-O Docker fará o download da imagem do PostgreSQL, construirá os ambientes do Node.js e do Next.js de forma isolada, instalará todas as dependências e iniciará os servidores.
-
-🌐 Acessando a Aplicação
-Após o terminal confirmar que os serviços subiram com sucesso, abra o seu navegador e acesse as seguintes URLs:
-
-Frontend (Interface do Usuário): http://localhost:3000
-
-Backend (API RESTful): http://localhost:3333
-
-Teste de Banco de Dados: http://localhost:3333/teste-db
-
-📁 Estrutura do Repositório
-/frontend: Contém o código-fonte da aplicação Next.js (Interface, componentes, consumo de API).
-
-/backend: Contém a API em Node.js/Express, responsável pela regra de negócio e comunicação com o banco.
-
-docker-compose.yml: Orquestra os três contêineres (frontend, backend e db), configurando redes internas, variáveis de ambiente e volumes.
-
-🔄 Hot-Reload
-O ambiente foi configurado com volumes no Docker. Isso significa que qualquer alteração feita e salva nos arquivos .js, .ts ou .tsx refletirá instantaneamente no navegador ou na API, sem a necessidade de reiniciar os contêineres.
-
-Feito com dedicação por Vinícius Lima.
+* **🐳 Orquestração Zero-Config com Docker:** O arquivo `docker-compose.yml` gerencia a subida simultânea do Banco de Dados, Backend e Frontend. Os contêineres se comunicam de forma segura através de uma rede interna.
+* **🧱 Backend Robusto (NestJS):** API estruturada com injeção de dependências, modularidade e TypeScript estrito, rodando na porta 3333 e exposta corretamente via `0.0.0.0`.
+* **🛡️ CORS Liberado:** Segurança de acesso pré-configurada no `main.ts` (`app.enableCors()`), permitindo que o frontend consuma a API imediatamente sem bloqueios do navegador.
+* **🩺 Endpoint de Health Check:** Módulo dedicado na rota `GET /health` criado para testar instantaneamente a integridade do sistema. Ele valida e retorna o status em tempo real tanto da API quanto da comunicação com o banco de dados.
+* **🗄️ Banco de Dados (PostgreSQL):** Instância relacional isolada rodando na porta nativa 5432, pronta para receber conexões.
+* **🔗 Comunicação Inteligente (Prisma ORM):** Prisma configurado com módulo `PrismaService` global no NestJS. Permite consultas ao banco de dados com tipagem forte e autocompletar, sem necessidade de instanciar conexões repetidas vezes.
+* **🖥️ Frontend (Next.js):** Base em React preparada na porta 3000, pronta para consumir as rotas do backend.
